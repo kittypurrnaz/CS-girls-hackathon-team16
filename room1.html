@@ -10,22 +10,24 @@
 </head>
 <body>
     <div class="room_background study-room">
-        <div class="overlay-text"></div>
         <div class="top-buttons">
           <button class="top-btn" onclick="location.href='index.html'">Home</button>
-          <button id="aboutBtn" class="top-btn" onclick="openPopup()">About</button>
+          <button id="aboutBtn" class="top-btn">About</button>
           
           <div class="popup" id="popup">
             <p>This is the About section for "I Miss My Grandma's House" web app, a project for a hackathon. It aims to provide a comforting and supportive environment for users, featuring a grandma-like chatbot for study support and emotional venting, along with helpful tools like a Pomodoro timer.</p>
-            <button type="button" onclick="closePopup()">OK</button>
+            <button type="button" id="closeAboutPopup">OK</button>
           </div>
 
           <div class="dropdown">
-            <button class="top-btn dropbtn">Room</button>
-            <div class="dropdown-content">
-              <a href="room1.html">Room 1</a>
-                <a href="room2.html">Room 2</a>
-              <a href="room3.html">Room 3</a>
+            <div class="dropdown-wrapper">
+              <button class="top-btn dropbtn">Room
+                  <div class="dropdown-content">
+                    <a href="room1.html">Room 1</a>
+                    <a href="room2.html">Room 2</a>
+                    <a href="room3.html">Room 3</a>
+                  </div>
+              </button>
             </div>
           </div>
         </div>
@@ -91,21 +93,5 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-      // About popup script for room1.html (duplicated for now)
-      let popup = document.getElementById("popup");
-
-      function openPopup() {
-        if (popup) {
-          popup.classList.add("open-popup");
-        }
-      }
-
-      function closePopup() {
-        if (popup) {
-          popup.classList.remove("open-popup");
-        }
-      }
-    </script>
 </body>
 </html>

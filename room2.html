@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Miss My Grandma's House - Room 2 (Chat)</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="chat.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="chat-page-container">
+    <div class="chat-header">
+      <button class="back-btn" onclick="location.href='index.html'">🏡 Back Home</button>
+      <h2>Grandma's Listening, Dear!</h2>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot-message">
+        <p>Hello there, my dear! Come on in and tell Grandma what's on your mind today. Are you studying hard, or do you just need a friendly ear?</p>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Type your message here, sweetie...">
+      <button id="sendBtn">Send</button>
+    </div>
+
+  </div>
+
+  <div class="popup" id="popup">
+    <p>This is the About section for "I Miss My Grandma's House" web app, a project for a hackathon. It aims to provide a comforting and supportive environment for users, featuring a grandma-like chatbot for study support and emotional venting, along with helpful tools like a Pomodoro timer.</p>
+    <button type="button" id="closeAboutPopup">OK</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
