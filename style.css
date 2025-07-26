@@ -25,11 +25,28 @@ $gradient-bottom-left: linear-gradient(315deg, #3C140Aff, #B24A06ff, #F9C150ff, 
 $gradient-radial: radial-gradient(#3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
 
 
-h1{
-    text-align: center;
-    margin-top: 50px;
-    color: #FFFFFF;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 10em;
-    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+body {
+    background-color: #2e2117 ;
 }
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('ka1.ttf');
+}
+.image-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Pixelify San';
+    font-size: 1em;
+    color: #fffcfa;
+    text-align: center;
+    margin-top: 20px;
+}
+
