@@ -124,8 +124,7 @@ body {
     font-family: 'Pixelify Sans', cursive;
     text-transform: uppercase;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* For dropdown: ensure it's a positioning context */
-    position: relative; /* Add this to .top-btn for direct dropdown child */
+    position: relative;
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -135,38 +134,32 @@ body {
     box-shadow: 0 0 20px 5px var(--xanthous), 0 6px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Dropdown for Room Navigation (SIMPLIFIED & FIXED) --- */
-/* The .dropdown class is now just a container for the .top-btn.dropbtn */
+/* --- Dropdown for Room Navigation --- */
 .dropdown {
-    position: relative; /* Important: The dropdown-content is absolutely positioned relative to this */
-    display: inline-block; /* Allows side-by-side with other top-buttons */
-    /* Remove padding-bottom from here */
+    position: relative;
+    display: inline-block;
 }
 
-/* The dropbtn is the actual button, and now it's the hover target */
-.dropbtn {
-    /* top-btn styles already apply to this */
-    /* Ensure the button itself is the positioning context for the dropdown-content */
+.dropdown-wrapper {
     position: relative;
-    z-index: 2; /* Keep button above dropdown content, but dropdown content will have higher z-index */
-    /* Adjust padding to prevent internal gaps */
-    padding-bottom: 12px; /* Add internal padding for hover area */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 5px;
 }
 
 .dropdown-content {
-    display: none; /* Hidden by default */
+    display: none;
     position: absolute;
     background-color: var(--black-bean);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
-    z-index: 3; /* Higher than the button itself to overlap */
+    z-index: 3;
     border-radius: 8px;
     padding: 10px 0;
-    /* Position directly below the button */
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    /* Remove opacity/visibility transitions for immediate show/hide */
 }
 
 .dropdown-content a {
@@ -185,10 +178,8 @@ body {
     color: var(--xanthous);
 }
 
-/* Show the dropdown content when the dropbtn (which is a .top-btn) is hovered */
-/* The key is that the dropdown-content is *inside* the dropbtn, making the hover continuous */
 .dropbtn:hover .dropdown-content {
-    display: block; /* Force display on hover */
+    display: block;
 }
 
 
@@ -256,17 +247,23 @@ body {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background-color: var(--black-bean);
+    /* --- GIF BACKGROUND (Sharper & 40% Transparent --- */
+    background-image: linear-gradient(rgba(60, 20, 10, 0.6), rgba(60, 20, 10, 0.9)), url('placeholder.gif'); /* 60% Black overlay for ~40% GIF transparency */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--black-bean); /* Fallback */
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 177, 153, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.025) 0%, transparent 50%);
-    transition: background 3s ease-in-out;
+
 }
+
+
+
 
 .main-buttons {
     display: flex;

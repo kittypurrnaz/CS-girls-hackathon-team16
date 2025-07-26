@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let botResponse = "Oh, my dear, that's a lovely thought. Tell Grandma more about it.";
                 
                 if (userMessage.toLowerCase().includes("study") || userMessage.toLowerCase().includes("studying")) {
-                    botResponse = "Studying, are we, sweetie? That's wonderful! Just make sure to stretch your legs every now and then, and don't forget to blink! Grandma worries about your eyes.";
+                    botResponse = "Studying, are we, sweetie? That's wonderful! Just make sure to stretch your legs every now and then, and don't forget to blink! Grandma worries about your eyes!";
                     scheduleReminder("water"); // Schedule a reminder after a study-related message
                 } else if (userMessage.toLowerCase().includes("stress") || userMessage.toLowerCase().includes("vent") || userMessage.toLowerCase().includes("frustrated")) {
                     botResponse = "Oh, my precious, it sounds like you're feeling a bit overwhelmed. It's perfectly alright to feel that way. Just take a deep breath. Grandma's here, and we can talk about anything.";
@@ -193,21 +193,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const timer = new StudyPomodoroTimer(); // Initialize timer here as well
     }
     
-    // Optional: Add some ambient study room effects (only on room1.html)
-    const studyRoom = document.querySelector('.room_background.study-room');
-    if (studyRoom) {
-        const addStudyRoomEffects = () => {
-            setInterval(() => {
-                const opacity = 0.05 + Math.random() * 0.05; // Keep opacity subtle
-                studyRoom.style.background = `
-                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity}) 0%, transparent 50%),
-                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(255, 177, 153, ${opacity}) 0%, transparent 50%),
-                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity * 0.5}) 0%, transparent 50%)
-                `;
-            }, 3000); // Change every 3 seconds
-        };
-        addStudyRoomEffects();
-    }
+    // --- COMMENTED OUT: This was overriding the GIF background ---
+    // const studyRoom = document.querySelector('.room_background.study-room');
+    // if (studyRoom) {
+    //     const addStudyRoomEffects = () => {
+    //         setInterval(() => {
+    //             const opacity = 0.05 + Math.random() * 0.05; // Keep opacity subtle
+    //             studyRoom.style.background = `
+    //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity}) 0%, transparent 50%),
+    //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(255, 177, 153, ${opacity}) 0%, transparent 50%),
+    //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity * 0.5}) 0%, transparent 50%)
+    //             `;
+    //         }, 3000); // Change every 3 seconds
+    //     };
+    //     addStudyRoomEffects();
+    // }
 });
 
 // Service Worker for notifications (if needed) - This requires a sw.js file
