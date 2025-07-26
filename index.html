@@ -14,7 +14,21 @@
     <h2 class="overlay-text-bottom">Choose Your Rooms</h2>
     <div class="top-buttons">
       <button class="top-btn" onclick="location.href='index.html'">Home</button>
-      <button class="top-btn" onclick="location.href='about.html'">About</button>
+      <button id="aboutbtn" class="btn" onclick="openPopup()" >About</button>
+      /* for popup button */
+            <div class="popup" id="popup" >
+        <p> About section of this hackathon project</p>
+        <button type="button" onClick="closePopup()">OK</button>
+      </div>
+    <script>
+      let popup = document.getElementById("popup");
+      function openPopup() {
+        popup.classList.add("open-popup");
+      }
+      function closePopup() {
+        popup.classList.remove("open-popup");
+      }
+    </script>
       <button class="top-btn" onclick="location.href='room.html'">Room</button>
     </div>
   </div>
