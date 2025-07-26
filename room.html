@@ -15,4 +15,76 @@
         <button class="top-btn" onclick="location.href='about.html'">About</button>
         <button class="top-btn" onclick="location.href='room.html'">Room</button>
         </div>
+      div class="main-buttons">
+      <button class="circle-btn" id="spotifyBtn">🎵 RLX</button>
+      <button class="circle-btn" id="todoBtn">📝 ToDo</button>
+      <button class="circle-btn" id="openTimerBtn">⏰ Pomodoro</button>
+    </div>
+  </div>
+
+  <!-- Pomodoro Timer Pop-up -->
+  <div class="timer-overlay" id="timerOverlay">
+    <div class="timer-popup">
+      <div class="popup-header">
+        <h2 class="popup-title">🎧 Study Timer</h2>
+        <button class="close-btn" id="closeBtn">✕</button>
+      </div>
+
+      <div class="timer-content">
+        <!-- Time Display -->
+        <div class="time-display" id="timeDisplay">25:00</div>
+        
+        <!-- Mode Status -->
+        <div class="mode-status" id="modeStatus">Focus Time</div>
+
+        <!-- Duration Selection -->
+        <div class="duration-selector">
+          <label>Focus Duration:</label>
+          <div class="duration-buttons">
+            <button class="duration-btn active" data-duration="25">25 min</button>
+            <button class="duration-btn" data-duration="50">50 min</button>
+          </div>
+        </div>
+
+        <!-- Break Selection -->
+        <div class="break-selector">
+          <label>After focus, take:</label>
+          <div class="break-buttons">
+            <button class="break-btn active" data-break="5">Short Break (5 min)</button>
+            <button class="break-btn" data-break="15">Long Break (15 min)</button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="timer-controls">
+          <button class="control-btn start-btn" id="startBtn">▶ Start</button>
+          <button class="control-btn reset-btn" id="resetBtn">⟲ Reset</button>
+        </div>
+
+        <!-- Session Info -->
+        <div class="session-info">
+          <div class="session-counter">Session: <span id="sessionCount">1</span></div>
+          <div class="completed-counter">Completed: <span id="completedCount">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <div class="notification-content">
+      <div class="notification-icon">🎉</div>
+      <div class="notification-text" id="notificationText">Great job! Time for a break!</div>
+      <button class="notification-close" id="notificationClose">×</button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
 </html>
