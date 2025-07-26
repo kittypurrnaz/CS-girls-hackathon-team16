@@ -25,72 +25,29 @@ $gradient-bottom-left: linear-gradient(315deg, #3C140Aff, #B24A06ff, #F9C150ff, 
 $gradient-radial: radial-gradient(#3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
 
 
-h1{
+body {
+    background-color: #2e2117 ;
+}
+
+.image-container {
+    position: relative;
     text-align: center;
-    margin-top: 50px;
-    color: #FFFFFF;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 10em;
-    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
-}
-
-body{
-    background-color: #FFFFFF;
-}
-
-img {
-    display: block;
-    margin: 30px auto;
-    border-radius: 20px;
-    width: 500px;       
-}
-
-.container {
-    width: 800px;         
-    height: 600px;        
-    margin: 40px auto;   
-    background: rgba(255,255,255,0.8);
-    border-radius: 0; 
-    box-shadow: 0 4px 16px #d36c6c22;
-    padding: 30px;
-}
-
-header {
-    text-align: center;
-    padding: 40px 0 20px 0;
-    background: transparent;
-}
-
-.main-image {
-    width: 100vw;
-    height: calc(100vh - 100px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.main-image img {
-    width: 80vw;
-    height: 80vh;
-    object-fit: cover;
-    border-radius: 20px;
+    color: white;
 }
 
 .overlay-text {
     position: absolute;
-    top: 10%;
+    top: 0%;
     left: 50%;
-    transform: translate(-50%, -10%);
-    color: #fff;
-    font-size: 10em;
-    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
-    font-family: 'Pixelify Sans', sans-serif;
+    transform: translate(-50%, -50%);
+    font-family: 'Pixelify Sans';
+    font-size: 1em;
+    color: #fffcfa;
     text-align: center;
-    width: 90%;
-    z-index: 2;
+    margin-top: 20px;
 }
 
+<<<<<<< HEAD
 .top-buttons {
     position: absolute;
     top: 20px;
@@ -98,3 +55,5 @@ header {
     display: flex;
     gap: 10px;
 }
+=======
+>>>>>>> fda642c3767f14ab967300644eed521d48b215b6
