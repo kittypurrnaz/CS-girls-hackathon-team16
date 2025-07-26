@@ -59,3 +59,9 @@ body {
     display: flex;
     gap: 10px;
 }
+
+.rooms {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
