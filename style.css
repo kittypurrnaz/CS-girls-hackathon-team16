@@ -40,26 +40,37 @@ body {
     display: block; /* Remove extra space below image */
 }
 
-/* Overlay Text - The main title */
 .overlay-text {
     position: absolute;
-    top: 50%; /* Centered vertically */
-    left: 50%; /* Centered horizontally */
-    transform: translate(-50%, -50%); /* Adjust for true centering */
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Pixelify Sans';
+    font-size: 5em;
+    color: #fffcfa;
     text-align: center;
-    color: var(--soft-off-white); /* Using the light color you provided for contrast */
+    margin-top: 20px;
     text-shadow:
-        2px 2px 4px rgba(0, 0, 0, 0.6),
-        -2px -2px 4px rgba(0, 0, 0, 0.6),
-        -2px 2px 4px rgba(0, 0, 0, 0.6),
-        2px -2px 4px rgba(0, 0, 0, 0.6); /* Enhanced shadow for better visibility */
-    font-size: 4.5em; /* Large for impact */
-    font-weight: bold;
-    letter-spacing: 2px;
-    white-space: nowrap; /* Prevent the title from wrapping to multiple lines */
-    animation: fadeInScale 1.5s ease-out forwards; /* Simple animation on load */
-    z-index: 5; /* Ensure it's above the image but below buttons */
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        -2px -2px 4px rgba(0, 0, 0, 0.5),
+        -2px 2px 4px rgba(0, 0, 0, 0.5),
+        2px -2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.overlay-text-bottom{
+  position: absolute;
+  bottom: 300px;              
+  left: 50%;                  
+  transform: translateX(-50%);
+  font-family: 'Pixelify Sans';
+  font-size: 5em;           
+  color: #fffcfa;
+  text-align: center;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    -2px -2px 4px rgba(0, 0, 0, 0.5);
+}
+
 
 /* Top Buttons - Navigation */
 .top-buttons {
