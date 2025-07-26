@@ -1,76 +1,174 @@
-/* CSS HEX */
---black-bean: #3C140Aff;
---rust: #B24A06ff;
---xanthous: #F9C150ff;
---butterscotch: #D5892Bff;
---russet: #894619ff;
---white: #FFFFFF
-
-/* scss HEX */
-$black-bean: #3C140Aff;
-$rust: #B24A06ff;
-$xanthous: #F9C150ff;
-$butterscotch: #D5892Bff;
-$russet: #894619ff;
-
-/* SCSS Gradient */
-$gradient-top: linear-gradient(0deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-right: linear-gradient(90deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-bottom: linear-gradient(180deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-left: linear-gradient(270deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-top-right: linear-gradient(45deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-bottom-right: linear-gradient(135deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-top-left: linear-gradient(225deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-bottom-left: linear-gradient(315deg, #3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-$gradient-radial: radial-gradient(#3C140Aff, #B24A06ff, #F9C150ff, #D5892Bff, #894619ff);
-
-
-body {
-    background-color: #2e2117 ;
+/* --- Color Palette from User --- */
+:root {
+    --black-bean: #3C140A;
+    --rust: #B24A06;
+    --xanthous: #F9C150;
+    --butterscotch: #D5892B;
+    --russet: #894619;
+    --white: #FFFFFF;
+    --soft-off-white: #fffcfa; /* From original overlay-text color */
 }
 
+/* Basic Resets & Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    overflow-x: hidden; /* Prevent horizontal scroll bar */
+    font-family: 'Pixelify Sans', cursive; /* Main font, particularly for titles/buttons */
+    background-color: var(--black-bean); /* Using your black-bean for the background */
+    color: var(--white); /* Default text color, ensuring contrast */
+}
+
+/* Image Container - Full viewport cover */
 .image-container {
     position: relative;
-    text-align: center;
-    color: white;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden; /* Ensure image doesn't overflow */
 }
 
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the entire container while maintaining aspect ratio */
+    /* Adjusting filter to complement new color palette and theme */
+    filter: sepia(0.3) brightness(0.85) contrast(1.1);
+    display: block; /* Remove extra space below image */
+}
+
+/* Overlay Text - The main title */
 .overlay-text {
     position: absolute;
-    top: 0%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Pixelify Sans';
-    font-size: 1em;
-    color: #fffcfa;
+    top: 50%; /* Centered vertically */
+    left: 50%; /* Centered horizontally */
+    transform: translate(-50%, -50%); /* Adjust for true centering */
     text-align: center;
-    margin-top: 20px;
-    text-shadow: 
-         2px 2px 4px rgba(0, 0, 0, 0.5),
-        -2px -2px 4px rgba(0, 0, 0, 0.5),
-        -2px 2px 4px rgba(0, 0, 0, 0.5),
-         2px -2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--soft-off-white); /* Using the light color you provided for contrast */
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.6),
+        -2px -2px 4px rgba(0, 0, 0, 0.6),
+        -2px 2px 4px rgba(0, 0, 0, 0.6),
+        2px -2px 4px rgba(0, 0, 0, 0.6); /* Enhanced shadow for better visibility */
+    font-size: 4.5em; /* Large for impact */
+    font-weight: bold;
+    letter-spacing: 2px;
+    white-space: nowrap; /* Prevent the title from wrapping to multiple lines */
+    animation: fadeInScale 1.5s ease-out forwards; /* Simple animation on load */
+    z-index: 5; /* Ensure it's above the image but below buttons */
 }
 
+/* Top Buttons - Navigation */
 .top-buttons {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 30px; /* Distance from the top */
+    right: 30px; /* Distance from the right */
     display: flex;
-    gap: 10px;
+    gap: 20px; /* Space between buttons */
+    z-index: 10; /* Ensure buttons are above other elements */
 }
 
+.top-btn {
+    background-color: var(--rust); /* Using your rust color for buttons */
+    color: var(--white);
+    padding: 12px 25px;
+    border: 2px solid var(--russet); /* A darker shade for the border */
+    border-radius: 8px; /* Slightly rounded corners */
+    cursor: pointer;
+    font-size: 1.1em;
+    font-family: 'Pixelify Sans', cursive;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transitions for hover effects */
+}
+
+.top-btn:hover {
+    background-color: var(--butterscotch); /* Butterscotch on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+}
+
+/* Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* `rooms` class - although not in HTML yet, good to define for future use */
 .rooms {
     display: flex;
     justify-content: center;
     text-align: center;
+    /* Add styling here if you plan to use it on `room.html` or similar */
 }
 
-.room_background {
-    background-image: url('southeastasian.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    margin: 0;
+/* --- Responsive Design --- */
+
+/* For Tablets and smaller desktops (e.g., up to 1024px) */
+@media (max-width: 1024px) {
+    .overlay-text {
+        font-size: 3.5em; /* Slightly smaller title */
+    }
+    .top-buttons {
+        gap: 15px;
+        top: 25px;
+        right: 25px;
+    }
+    .top-btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
+
+/* For Mobile Phones (e.g., up to 768px) */
+@media (max-width: 768px) {
+    .overlay-text {
+        font-size: 2.5em; /* Further reduce title size */
+        padding: 0 15px; /* Add horizontal padding to prevent text touching edges */
+        white-space: normal; /* Allow text to wrap on small screens if needed */
+        width: 90%; /* Limit width to ensure wrapping */
+    }
+
+    .top-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        top: 20px;
+        right: 20px;
+        left: 20px; /* Align buttons to the left on small screens */
+        width: calc(100% - 40px); /* Full width minus padding */
+        align-items: flex-end; /* Align stacked buttons to the right */
+        gap: 10px;
+    }
+
+    .top-btn {
+        width: auto; /* Allow buttons to size based on content */
+        max-width: 180px; /* Max width for stacked buttons */
+        padding: 10px 15px;
+        font-size: 0.9em;
+        text-align: center;
+    }
+}
+
+/* For very small phones (e.g., up to 480px) */
+@media (max-width: 480px) {
+    .overlay-text {
+        font-size: 1.8em;
+    }
+    .top-buttons {
+        right: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+    }
+    .top-btn {
+        font-size: 0.85em;
+        padding: 8px 12px;
+    }
 }
