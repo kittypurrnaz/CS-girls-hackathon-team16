@@ -247,6 +247,154 @@ body {
     }
 }
 
+/* --- Pomodoro Timer Styling --- */
+
+.pomodoro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(60, 20, 10, 0.9); /* black-bean with 90% opacity */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.pomodoro-overlay.active {
+  display: flex;
+}
+
+.pomodoro-popup {
+  background-color: var(--soft-off-white);
+  border: 4px solid var(--butterscotch);
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 340px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  font-family: 'Pixelify Sans', cursive;
+  color: var(--black-bean);
+  text-align: center;
+  animation: fadeInScale 0.6s ease-out;
+}
+
+.pomodoro-popup h2 {
+  margin-top: 0;
+  font-size: 1.8em;
+  color: var(--rust);
+}
+
+.pomodoro-time {
+  font-size: 3.5em;
+  margin: 20px 0 10px;
+  font-weight: bold;
+  color: var(--black-bean);
+}
+
+.pomodoro-mode {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  color: var(--russet);
+}
+
+.pomodoro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.pomo-btn {
+  background-color: var(--rust);
+  color: var(--white);
+  border: 2px solid var(--russet);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-family: 'Pixelify Sans', cursive;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pomo-btn:hover {
+  background-color: var(--butterscotch);
+  transform: scale(1.05);
+}
+
+.pomo-btn.active {
+  background-color: var(--xanthous);
+  color: var(--black-bean);
+  border-color: var(--butterscotch);
+}
+
+.duration-settings {
+  margin: 15px 0;
+}
+
+.duration-settings label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: var(--black-bean);
+}
+
+.duration-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.duration-btn {
+  background-color: var(--xanthous);
+  color: var(--black-bean);
+  border: 2px solid var(--butterscotch);
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease;
+}
+
+.duration-btn.active {
+  background-color: var(--butterscotch);
+  font-weight: bold;
+}
+
+.progress-bar-container {
+  height: 10px;
+  background-color: var(--xanthous);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--rust);
+  transition: width 1s linear;
+}
+
+/* Close Button */
+.pomodoro-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  color: var(--russet);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.pomodoro-close:hover {
+  transform: scale(1.2);
+}
+
 /* For very small phones (e.g., up to 480px) */
 @media (max-width: 480px) {
     .overlay-text {
