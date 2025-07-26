@@ -40,37 +40,78 @@ body {
     display: block; /* Remove extra space below image */
 }
 
+/* Overlay Text - The main title (Moved to Top) */
 .overlay-text {
     position: absolute;
-    top: 50px;
+    top: 80px; /* Position 80px from the top for consistent placement below top-buttons */
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Pixelify Sans';
-    font-size: 5em;
-    color: #fffcfa;
+    transform: translateX(-50%); /* Only translate X to center horizontally */
     text-align: center;
-    margin-top: 20px;
+    color: var(--soft-off-white);
     text-shadow:
-        2px 2px 4px rgba(0, 0, 0, 0.5),
-        -2px -2px 4px rgba(0, 0, 0, 0.5),
-        -2px 2px 4px rgba(0, 0, 0, 0.5),
-        2px -2px 4px rgba(0, 0, 0, 0.5);
+        2px 2px 4px rgba(0, 0, 0, 0.6),
+        -2px -2px 4px rgba(0, 0, 0, 0.6),
+        -2px 2px 4px rgba(0, 0, 0, 0.6),
+        2px -2px 4px rgba(0, 0, 0, 0.6); /* Enhanced shadow for better visibility */
+    font-size: 5em; /* Large for impact */
+    font-weight: bold;
+    letter-spacing: 2px;
+    white-space: nowrap; /* Prevent the title from wrapping to multiple lines */
+    animation: fadeInScale 1.5s ease-out forwards; /* Simple animation on load */
+    z-index: 5; /* Ensure it's above the image but below buttons */
 }
 
-.overlay-text-bottom{
-  position: absolute;
-  bottom: 300px;              
-  left: 50%;                  
-  transform: translateX(-50%);
-  font-family: 'Pixelify Sans';
-  font-size: 5em;           
-  color: #fffcfa;
-  text-align: center;
-  text-shadow:
-    2px 2px 4px rgba(0, 0, 0, 0.5),
-    -2px -2px 4px rgba(0, 0, 0, 0.5);
+/* Overlay Text Bottom - The subtitle */
+.overlay-text-bottom {
+    position: absolute;
+    bottom: 35%; /* Adjusted to provide good spacing between top text and room buttons */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    font-family: 'Pixelify Sans', cursive; /* Ensure font is consistent */
+    font-size: 3em; /* Slightly smaller than main title, still impactful */
+    color: var(--soft-off-white);
+    text-align: center;
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.6),
+        -2px -2px 4px rgba(0, 0, 0, 0.6);
+    white-space: nowrap; /* Prevent from wrapping */
+    z-index: 5;
 }
 
+/* Room Selection Buttons */
+.room-selection-buttons {
+    position: absolute;
+    bottom: 20%; /* Position relative to the bottom, below the subtitle */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px; /* Space between room buttons */
+    z-index: 6; /* Higher than text, lower than top-buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    justify-content: center; /* Center buttons if they wrap */
+    padding: 0 20px; /* Add some padding on sides for small screens */
+}
+
+.room-btn {
+    background-color: var(--rust); /* Using Rust for consistency with other buttons */
+    color: var(--white);
+    padding: 15px 30px; /* Slightly larger padding for prominence */
+    border: 2px solid var(--russet);
+    border-radius: 10px; /* Slightly more rounded */
+    cursor: pointer;
+    font-size: 1.2em; /* Slightly larger font */
+    font-family: 'Pixelify Sans', cursive;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-btn:hover {
+    background-color: var(--butterscotch);
+    transform: translateY(-5px) scale(1.05); /* Glow effect similar to top buttons */
+    box-shadow: 0 0 20px 5px var(--xanthous), /* Main glow */
+                0 6px 15px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
+}
 
 /* Top Buttons - Navigation */
 .top-buttons {
@@ -92,25 +133,28 @@ body {
     font-size: 1.1em;
     font-family: 'Pixelify Sans', cursive;
     text-transform: uppercase;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transitions for hover effects */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Initial subtle shadow */
 }
 
 .top-btn:hover {
     background-color: var(--butterscotch); /* Butterscotch on hover */
-    transform: translateY(-3px); /* Slight lift effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+    transform: translateY(-5px) scale(1.05); /* Increased lift and added subtle scale for glow effect */
+    box-shadow: 0 0 20px 5px var(--xanthous), /* Main glow */
+                0 6px 15px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
 }
 
 /* Animations */
 @keyframes fadeInScale {
     from {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
+        /* Updated transform for consistent top positioning */
+        transform: translateX(-50%) scale(0.9);
     }
     to {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+        /* Updated transform for consistent top positioning */
+        transform: translateX(-50%) scale(1);
     }
 }
 
@@ -128,6 +172,19 @@ body {
 @media (max-width: 1024px) {
     .overlay-text {
         font-size: 3.5em; /* Slightly smaller title */
+        top: 60px; /* Adjust top for tablets */
+    }
+    .overlay-text-bottom {
+        font-size: 2em; /* Adjust subtitle size for tablets */
+        bottom: 30%; /* Adjust vertical position */
+    }
+    .room-selection-buttons {
+        bottom: 15%;
+        gap: 20px;
+    }
+    .room-btn {
+        padding: 12px 25px;
+        font-size: 1.1em;
     }
     .top-buttons {
         gap: 15px;
@@ -143,10 +200,32 @@ body {
 /* For Mobile Phones (e.g., up to 768px) */
 @media (max-width: 768px) {
     .overlay-text {
-        font-size: 2.5em; /* Further reduce title size */
+        font-size: 2em; /* Further reduce title size */
         padding: 0 15px; /* Add horizontal padding to prevent text touching edges */
         white-space: normal; /* Allow text to wrap on small screens if needed */
         width: 90%; /* Limit width to ensure wrapping */
+        top: 50px; /* Adjust top for mobile */
+    }
+    .overlay-text-bottom {
+        font-size: 1.5em; /* Further reduce subtitle size */
+        padding: 0 15px;
+        white-space: normal;
+        width: 90%;
+        bottom: 25%; /* Adjust vertical position */
+    }
+    .room-selection-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        bottom: 15%;
+        gap: 10px;
+        width: calc(100% - 40px); /* Full width minus padding */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .room-btn {
+        width: 100%; /* Make stacked buttons full width */
+        max-width: 250px; /* Limit max width for readability */
+        padding: 10px 20px;
+        font-size: 1em;
     }
 
     .top-buttons {
@@ -171,7 +250,19 @@ body {
 /* For very small phones (e.g., up to 480px) */
 @media (max-width: 480px) {
     .overlay-text {
-        font-size: 1.8em;
+        font-size: 1.5em;
+        top: 30px; /* Adjust top for very small phones */
+    }
+    .overlay-text-bottom {
+        font-size: 1.2em;
+        bottom: 20%;
+    }
+    .room-selection-buttons {
+        bottom: 10%;
+    }
+    .room-btn {
+        font-size: 0.9em;
+        padding: 8px 15px;
     }
     .top-buttons {
         right: 15px;
@@ -179,7 +270,7 @@ body {
         width: calc(100% - 30px);
     }
     .top-btn {
-        font-size: 0.85em;
+        font-size: 0.8em;
         padding: 8px 12px;
     }
 }
