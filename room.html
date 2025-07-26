@@ -2,89 +2,118 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>I Miss My Grandma's House</title>
+  <title>I Miss My Grandma's House - Room</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet"> {# Added Lora for body text #}
 </head>
 <body>
-    <div class="room_background">
-        <div class="overlay-text"></div>
+    <div class="room_background study-room"> {# Added 'study-room' class #}
+        <div class="overlay-text"></div> {# This overlay-text is currently empty, consider removing or using it #}
         <div class="top-buttons">
-        <button class="top-btn" onclick="location.href='index.html'">Home</button>
-        <button class="top-btn" onclick="location.href='about.html'">About</button>
-        <button class="top-btn" onclick="location.href='room.html'">Room</button>
-        </div>
-      <div class="main-buttons">
-      <button class="circle-btn" id="spotifyBtn">🎵 RLX</button>
-      <button class="circle-btn" id="todoBtn">📝 ToDo</button>
-      <button class="circle-btn" id="openTimerBtn">⏰ Pomodoro</button>
-    </div>
-  </div>
+          <button class="top-btn" onclick="location.href='index.html'">Home</button>
+          <button id="aboutBtn" class="top-btn" onclick="openPopup()">About</button>
+          
+          <!-- About Popup Structure (duplicated for this page, consider making it a reusable component or loading dynamically) -->
+          <div class="popup" id="popup">
+            <p>This is the About section for "I Miss My Grandma's House" web app, a project for a hackathon. It aims to provide a comforting and supportive environment for users, featuring a grandma-like chatbot for study support and emotional venting, along with helpful tools like a Pomodoro timer.</p>
+            <button type="button" onclick="closePopup()">OK</button>
+          </div>
 
-  <!-- Pomodoro Timer Pop-up -->
-  <div class="timer-overlay" id="timerOverlay">
-    <div class="timer-popup">
-      <div class="popup-header">
-        <h2 class="popup-title">🎧 Study Timer</h2>
-        <button class="close-btn" id="closeBtn">✕</button>
-      </div>
-
-      <div class="timer-content">
-        <!-- Time Display -->
-        <div class="time-display" id="timeDisplay">25:00</div>
-        
-        <!-- Mode Status -->
-        <div class="mode-status" id="modeStatus">Focus Time</div>
-
-        <!-- Duration Selection -->
-        <div class="duration-selector">
-          <label>Focus Duration:</label>
-          <div class="duration-buttons">
-            <button class="duration-btn active" data-duration="25">25 min</button>
-            <button class="duration-btn" data-duration="50">50 min</button>
+          <!-- Room Dropdown Button -->
+          <div class="dropdown">
+            <button class="top-btn dropbtn">Room</button>
+            <div class="dropdown-content">
+              <a href="room.html">Room 1</a>
+              <a href="room.html">Room 2</a>
+              <a href="room.html">Room 3</a>
+            </div>
           </div>
         </div>
 
-        <!-- Break Selection -->
-        <div class="break-selector">
-          <label>After focus, take:</label>
-          <div class="break-buttons">
-            <button class="break-btn active" data-break="5">Short Break (5 min)</button>
-            <button class="break-btn" data-break="15">Long Break (15 min)</button>
+        <div class="main-buttons">
+          <button class="circle-btn" id="spotifyBtn">🎵 RLX</button>
+          <button class="circle-btn" id="todoBtn">📝 ToDo</button>
+          <button class="circle-btn" id="openTimerBtn">⏰ Pomodoro</button>
+        </div>
+    </div>
+
+    <!-- Pomodoro Timer Pop-up -->
+    <div class="timer-overlay" id="timerOverlay">
+      <div class="timer-popup">
+        <div class="popup-header">
+          <h2 class="popup-title">🎧 Study Timer</h2>
+          <button class="close-btn" id="closeBtn">✕</button>
+        </div>
+
+        <div class="timer-content">
+          <!-- Time Display -->
+          <div class="time-display" id="timeDisplay">25:00</div>
+          
+          <!-- Mode Status -->
+          <div class="mode-status" id="modeStatus">Focus Time</div>
+
+          <!-- Duration Selection -->
+          <div class="duration-selector">
+            <label>Focus Duration:</label>
+            <div class="duration-buttons">
+              <button class="duration-btn active" data-duration="25">25 min</button>
+              <button class="duration-btn" data-duration="50">50 min</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-container">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
+          <!-- Break Selection -->
+          <div class="break-selector">
+            <label>After focus, take:</label>
+            <div class="break-buttons">
+              <button class="break-btn active" data-break="5">Short Break (5 min)</button>
+              <button class="break-btn" data-break="15">Long Break (15 min)</button>
+            </div>
+          </div>
 
-        <!-- Controls -->
-        <div class="timer-controls">
-          <button class="control-btn start-btn" id="startBtn">▶ Start</button>
-          <button class="control-btn reset-btn" id="resetBtn">⟲ Reset</button>
-        </div>
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
 
-        <!-- Session Info -->
-        <div class="session-info">
-          <div class="session-counter">Session: <span id="sessionCount">1</span></div>
-          <div class="completed-counter">Completed: <span id="completedCount">0</span></div>
+          <!-- Controls -->
+          <div class="timer-controls">
+            <button class="control-btn start-btn" id="startBtn">▶ Start</button>
+            <button class="control-btn reset-btn" id="resetBtn">⟲ Reset</button>
+          </div>
+
+          <!-- Session Info -->
+          <div class="session-info">
+            <div class="session-counter">Session: <span id="sessionCount">1</span></div>
+            <div class="completed-counter">Completed: <span id="completedCount">0</span></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Notification -->
-  <div class="notification" id="notification">
-    <div class="notification-content">
-      <div class="notification-icon">🎉</div>
-      <div class="notification-text" id="notificationText">Great job! Time for a break!</div>
-      <button class="notification-close" id="notificationClose">×</button>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+      <div class="notification-content">
+        <div class="notification-icon">🎉</div>
+        <div class="notification-text" id="notificationText">Great job! Time for a break!</div>
+        <button class="notification-close" id="notificationClose">×</button>
+      </div>
     </div>
-  </div>
 
-  <!-- JavaScript -->
-  <script src="script.js"></script>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+      // About popup script for room.html (duplicated for now)
+      let popup = document.getElementById("popup");
+
+      function openPopup() {
+        popup.classList.add("open-popup");
+      }
+
+      function closePopup() {
+        popup.classList.remove("open-popup");
+      }
+    </script>
 </body>
 </html>

@@ -1,4 +1,19 @@
+// About Popup functions (copied from index.html for room.html's about button)
+let popup = document.getElementById("popup");
 
+function openPopup() {
+    if (popup) { // Check if popup element exists
+        popup.classList.add("open-popup");
+    }
+}
+
+function closePopup() {
+    if (popup) { // Check if popup element exists
+        popup.classList.remove("open-popup");
+    }
+}
+
+// Pomodoro Timer Class
 class StudyPomodoroTimer {
     constructor() {
         this.focusDuration = 25; // Default 25 minutes
@@ -14,12 +29,13 @@ class StudyPomodoroTimer {
         this.initElements();
         this.bindEvents();
         this.updateDisplay();
+        this.updateSessionDisplay(); // Initialize session display
     }
 
     initElements() {
         // Pop-up elements
         this.openBtn = document.getElementById('openTimerBtn');
-        this.overlay = document.getElementById('timerOverlay');
+        this.overlay = document.getElementById('timerOverlay'); // Corrected ID
         this.closeBtn = document.getElementById('closeBtn');
         
         // Timer elements
@@ -45,15 +61,25 @@ class StudyPomodoroTimer {
 
     bindEvents() {
         // Pop-up controls
-        this.openBtn.addEventListener('click', () => this.openTimer());
-        this.closeBtn.addEventListener('click', () => this.closeTimer());
-        this.overlay.addEventListener('click', (e) => {
-            if (e.target === this.overlay) this.closeTimer();
-        });
+        if (this.openBtn) { // Check if element exists before adding listener
+            this.openBtn.addEventListener('click', () => this.openTimer());
+        }
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.closeTimer());
+        }
+        if (this.overlay) {
+            this.overlay.addEventListener('click', (e) => {
+                if (e.target === this.overlay) this.closeTimer();
+            });
+        }
 
         // Timer controls
-        this.startBtn.addEventListener('click', () => this.toggleTimer());
-        this.resetBtn.addEventListener('click', () => this.resetTimer());
+        if (this.startBtn) {
+            this.startBtn.addEventListener('click', () => this.toggleTimer());
+        }
+        if (this.resetBtn) {
+            this.resetBtn.addEventListener('click', () => this.resetTimer());
+        }
 
         // Duration selection
         this.durationButtons.forEach(btn => {
@@ -72,28 +98,37 @@ class StudyPomodoroTimer {
         });
 
         // Notification close
-        this.notificationClose.addEventListener('click', () => this.hideNotification());
+        if (this.notificationClose) {
+            this.notificationClose.addEventListener('click', () => this.hideNotification());
+        }
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && this.overlay.classList.contains('active')) {
-                e.preventDefault();
-                this.toggleTimer();
-            }
-            if (e.code === 'Escape') {
-                this.closeTimer();
+            // Only trigger if the timer overlay is active
+            if (this.overlay && this.overlay.classList.contains('active')) {
+                if (e.code === 'Space') {
+                    e.preventDefault(); // Prevent scrolling
+                    this.toggleTimer();
+                }
+                if (e.code === 'Escape') {
+                    this.closeTimer();
+                }
             }
         });
     }
 
     openTimer() {
-        this.overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        if (this.overlay) {
+            this.overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent body scroll when popup is open
+        }
     }
 
     closeTimer() {
-        this.overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        if (this.overlay) {
+            this.overlay.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore body scroll
+        }
     }
 
     selectDuration(minutes) {
@@ -130,8 +165,10 @@ class StudyPomodoroTimer {
 
     startTimer() {
         this.isRunning = true;
-        this.startBtn.textContent = '⏸ Pause';
-        this.startBtn.classList.add('paused');
+        if (this.startBtn) {
+            this.startBtn.textContent = '⏸ Pause';
+            this.startBtn.classList.add('paused');
+        }
 
         this.interval = setInterval(() => {
             this.currentTime--;
@@ -146,8 +183,10 @@ class StudyPomodoroTimer {
 
     pauseTimer() {
         this.isRunning = false;
-        this.startBtn.textContent = '▶ Start';
-        this.startBtn.classList.remove('paused');
+        if (this.startBtn) {
+            this.startBtn.textContent = '▶ Start';
+            this.startBtn.classList.remove('paused');
+        }
         clearInterval(this.interval);
     }
 
@@ -164,12 +203,16 @@ class StudyPomodoroTimer {
         
         this.updateDisplay();
         this.updateProgressBar();
-        this.timeDisplay.classList.remove('pulse');
+        if (this.timeDisplay) {
+            this.timeDisplay.classList.remove('pulse');
+        }
     }
 
     completeSession() {
         this.pauseTimer();
-        this.timeDisplay.classList.add('pulse');
+        if (this.timeDisplay) {
+            this.timeDisplay.classList.add('pulse');
+        }
 
         if (!this.isBreakTime) {
             // Completed a focus session
@@ -190,12 +233,16 @@ class StudyPomodoroTimer {
         this.isBreakTime = true;
         this.currentTime = this.breakDuration * 60;
         this.totalTime = this.breakDuration * 60;
-        this.modeStatus.textContent = this.breakDuration === 5 ? 'Short Break' : 'Long Break';
+        if (this.modeStatus) {
+            this.modeStatus.textContent = this.breakDuration === 5 ? 'Short Break' : 'Long Break';
+        }
         this.updateDisplay();
         this.updateProgressBar();
         
         setTimeout(() => {
-            this.timeDisplay.classList.remove('pulse');
+            if (this.timeDisplay) {
+                this.timeDisplay.classList.remove('pulse');
+            }
         }, 3000);
     }
 
@@ -204,44 +251,60 @@ class StudyPomodoroTimer {
         this.sessionCount++;
         this.currentTime = this.focusDuration * 60;
         this.totalTime = this.focusDuration * 60;
-        this.modeStatus.textContent = 'Focus Time';
+        if (this.modeStatus) {
+            this.modeStatus.textContent = 'Focus Time';
+        }
         this.updateDisplay();
         this.updateProgressBar();
         
         setTimeout(() => {
-            this.timeDisplay.classList.remove('pulse');
+            if (this.timeDisplay) {
+                this.timeDisplay.classList.remove('pulse');
+            }
         }, 3000);
     }
 
     updateDisplay() {
         const minutes = Math.floor(this.currentTime / 60);
         const seconds = this.currentTime % 60;
-        this.timeDisplay.textContent = 
-            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        if (this.timeDisplay) {
+            this.timeDisplay.textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
     }
 
     updateProgressBar() {
         const progress = ((this.totalTime - this.currentTime) / this.totalTime) * 100;
-        this.progressBar.style.width = `${progress}%`;
+        if (this.progressBar) {
+            this.progressBar.style.width = `${progress}%`;
+        }
     }
 
     updateSessionDisplay() {
-        this.sessionCountEl.textContent = this.sessionCount;
-        this.completedCountEl.textContent = this.completedSessions;
+        if (this.sessionCountEl) {
+            this.sessionCountEl.textContent = this.sessionCount;
+        }
+        if (this.completedCountEl) {
+            this.completedCountEl.textContent = this.completedSessions;
+        }
     }
 
     showNotification(message, type = 'success') {
-        this.notificationText.textContent = message;
-        this.notification.classList.add('show');
+        if (this.notification && this.notificationText) {
+            this.notificationText.textContent = message;
+            this.notification.classList.add('show');
 
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            this.hideNotification();
-        }, 5000);
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                this.hideNotification();
+            }, 5000);
+        }
     }
 
     hideNotification() {
-        this.notification.classList.remove('show');
+        if (this.notification) {
+            this.notification.classList.remove('show');
+        }
     }
 
     playNotificationSound() {
@@ -263,11 +326,11 @@ class StudyPomodoroTimer {
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.5);
         } catch (error) {
-            console.log('Audio notification not available');
+            console.log('Audio notification not available or Web Audio API not supported:', error);
         }
     }
 
-    // Auto-start break timer (optional feature)
+    // Auto-start break timer (optional feature) - currently not called
     autoStartBreak() {
         if (this.isBreakTime) {
             setTimeout(() => {
@@ -279,26 +342,29 @@ class StudyPomodoroTimer {
 
 // Initialize the timer when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const timer = new StudyPomodoroTimer();
+    // Only initialize the timer if the necessary elements are present (i.e., on room.html)
+    if (document.getElementById('openTimerBtn')) {
+        const timer = new StudyPomodoroTimer();
+    }
     
-    // Optional: Add some ambient study room effects
-    const addStudyRoomEffects = () => {
-        // Subtle background animation
-        const studyRoom = document.querySelector('.study-room');
-        setInterval(() => {
-            const opacity = 0.1 + Math.random() * 0.1;
-            studyRoom.style.background = `
-                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, ${opacity}) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 177, 153, ${opacity}) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, ${opacity * 0.5}) 0%, transparent 50%)
-            `;
-        }, 3000);
-    };
-
-    addStudyRoomEffects();
+    // Optional: Add some ambient study room effects (only on room.html)
+    const studyRoom = document.querySelector('.room_background.study-room');
+    if (studyRoom) {
+        const addStudyRoomEffects = () => {
+            setInterval(() => {
+                const opacity = 0.05 + Math.random() * 0.05; // Keep opacity subtle
+                studyRoom.style.background = `
+                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity}) 0%, transparent 50%),
+                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(255, 177, 153, ${opacity}) 0%, transparent 50%),
+                    radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity * 0.5}) 0%, transparent 50%)
+                `;
+            }, 3000); // Change every 3 seconds
+        };
+        addStudyRoomEffects();
+    }
 });
 
-// Service Worker for notifications (if needed)
+// Service Worker for notifications (if needed) - This requires a sw.js file
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {
         console.log('Service Worker registration failed');
@@ -306,6 +372,14 @@ if ('serviceWorker' in navigator) {
 }
 
 // Request notification permission
+// This should ideally be triggered by a user gesture, not on page load
+// For now, it's here, but in production, consider a button click.
 if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
-                          }
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            console.log("Notification permission granted.");
+        } else {
+            console.log("Notification permission denied.");
+        }
+    });
+}
