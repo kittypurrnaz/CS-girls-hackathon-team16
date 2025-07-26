@@ -13,45 +13,33 @@
     <h1 class="overlay-text">I Miss My Grandma's House</h1>
     <h2 class="overlay-text-bottom">Choose Your Rooms</h2>
     
-    <!-- New: Room Selection Buttons under "Choose Your Rooms" -->
     <div class="room-selection-buttons">
-      <button class="room-btn" onclick="location.href='room.html'">room 1</button>
-      <button class="room-btn" onclick="location.href='room.html'">room 2</button>
-      <button class="room-btn" onclick="location.href='room.html'">room 3</button>
+      <button class="room-btn" onclick="location.href='room1.html'">room 1</button>
+      <button class="room-btn" onclick="location.href='room2.html'">room 2</button>
+      <button class="room-btn" onclick="location.href='room3.html'">room 3</button>
     </div>
 
     <div class="top-buttons">
       <button class="top-btn" onclick="location.href='index.html'">Home</button>
-      <button id="aboutBtn" class="top-btn" onclick="openPopup()">About</button>
+      <button id="aboutBtn" class="top-btn">About</button>
       
-      <!-- About Popup Structure -->
       <div class="popup" id="popup">
         <p>This is the About section for "I Miss My Grandma's House" web app, a project for a hackathon. It aims to provide a comforting and supportive environment for users, featuring a grandma-like chatbot for study support and emotional venting, along with helpful tools like a Pomodoro timer.</p>
-        <button type="button" onclick="closePopup()">OK</button>
+        <button type="button" id="closeAboutPopup">OK</button>
       </div>
 
-      <!-- Room Dropdown Button -->
       <div class="dropdown">
-        <button class="top-btn dropbtn">Room</button>
-        <div class="dropdown-content">
-          <a href="room.html">Room 1</a>
-          <a href="room.html">Room 2</a>
-          <a href="room.html">Room 3</a>
-        </div>
+        <button class="top-btn dropbtn">Room
+            <div class="dropdown-content">
+              <a href="room1.html">Room 1</a>
+              <a href="room2.html">Room 2</a>
+              <a href="room3.html">Room 3</a>
+            </div>
+        </button>
       </div>
     </div>
   </div>
 
-  <script>
-    let popup = document.getElementById("popup");
-
-    function openPopup() {
-      popup.classList.add("open-popup");
-    }
-
-    function closePopup() {
-      popup.classList.remove("open-popup");
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
