@@ -65,3 +65,12 @@ body {
     justify-content: center;
     text-align: center;
 }
+
+.room_background {
+    background-image: url('southeastasian.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+}
