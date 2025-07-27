@@ -373,3 +373,465 @@ function clearPlaylist() {
         `;
     }
 }
+
+// ToDo List Management Class
+class StudyTodoManager {
+    constructor() {
+        this.todos = [];
+        this.currentFilter = 'all';
+        this.nextId = 1;
+        
+        this.initElements();
+        this.bindEvents();
+        this.loadTodos();
+        this.updateStats();
+        this.renderTodos();
+    }
+
+    initElements() {
+        // Main elements
+        this.todoBtn = document.getElementById('todoBtn');
+        this.todoOverlay = document.getElementById('todoOverlay');
+        this.closeTodoBtn = document.getElementById('closeTodoBtn');
+        
+        // Input elements
+        this.todoInput = document.getElementById('todoInput');
+        this.addTodoBtn = document.getElementById('addTodoBtn');
+        this.prioritySelect = document.getElementById('prioritySelect');
+        
+        // Display elements
+        this.todoList = document.getElementById('todoList');
+        this.emptyState = document.getElementById('emptyState');
+        
+        // Stats elements
+        this.totalTasks = document.getElementById('totalTasks');
+        this.completedTasks = document.getElementById('completedTasks');
+        this.pendingTasks = document.getElementById('pendingTasks');
+        
+        // Filter and action elements
+        this.filterButtons = document.querySelectorAll('.filter-btn');
+        this.clearCompletedBtn = document.getElementById('clearCompletedBtn');
+        this.clearAllBtn = document.getElementById('clearAllBtn');
+    }
+
+    bindEvents() {
+        // Open/Close popup
+        if (this.todoBtn) {
+            this.todoBtn.addEventListener('click', () => this.openTodo());
+        }
+        
+        if (this.closeTodoBtn) {
+            this.closeTodoBtn.addEventListener('click', () => this.closeTodo());
+        }
+        
+        if (this.todoOverlay) {
+            this.todoOverlay.addEventListener('click', (e) => {
+                if (e.target === this.todoOverlay) this.closeTodo();
+            });
+        }
+
+        // Add todo
+        if (this.addTodoBtn) {
+            this.addTodoBtn.addEventListener('click', () => this.addTodo());
+        }
+        
+        if (this.todoInput) {
+            this.todoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.addTodo();
+            });
+        }
+
+        // Filter buttons
+        this.filterButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.setFilter(e.target.dataset.filter);
+            });
+        });
+
+        // Action buttons
+        if (this.clearCompletedBtn) {
+            this.clearCompletedBtn.addEventListener('click', () => this.clearCompleted());
+        }
+        
+        if (this.clearAllBtn) {
+            this.clearAllBtn.addEventListener('click', () => this.clearAll());
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (this.todoOverlay && this.todoOverlay.classList.contains('active')) {
+                if (e.code === 'Escape') this.closeTodo();
+            }
+        });
+    }
+
+    openTodo() {
+        if (this.todoOverlay) {
+            this.todoOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (this.todoInput) {
+                setTimeout(() => this.todoInput.focus(), 300);
+            }
+        }
+    }
+
+    closeTodo() {
+        if (this.todoOverlay) {
+            this.todoOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    addTodo() {
+        const task = this.todoInput.value.trim();
+        const priority = this.prioritySelect.value;
+        
+        if (!task) {
+            this.showNotification('Please enter a task!', 'error');
+            return;
+        }
+
+        const newTodo = {
+            id: this.nextId++,
+            task: task,
+            priority: priority,
+            completed: false,
+            createdAt: new Date().toISOString()
+        };
+
+        this.todos.unshift(newTodo); // Add to beginning of array
+        this.todoInput.value = '';
+        this.prioritySelect.value = 'medium';
+        
+        this.saveTodos();
+        this.updateStats();
+        this.renderTodos();
+        
+        this.showNotification('Task added successfully! 📝', 'success');
+    }
+
+    toggleTodo(id) {
+        const todo = this.todos.find(t => t.id === id);
+        if (todo) {
+            todo.completed = !todo.completed;
+            this.saveTodos();
+            this.updateStats();
+            this.renderTodos();
+            
+            const message = todo.completed ? 
+                'Great job! Task completed! 🎉' : 
+                'Task marked as pending 📋';
+            this.showNotification(message, 'success');
+        }
+    }
+
+    deleteTodo(id) {
+        const todoIndex = this.todos.findIndex(t => t.id === id);
+        if (todoIndex !== -1) {
+            this.todos.splice(todoIndex, 1);
+            this.saveTodos();
+            this.updateStats();
+            this.renderTodos();
+            this.showNotification('Task deleted! 🗑️', 'info');
+        }
+    }
+
+    setFilter(filter) {
+        this.currentFilter = filter;
+        
+        // Update filter button states
+        this.filterButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        
+        this.renderTodos();
+    }
+
+    getFilteredTodos() {
+        switch (this.currentFilter) {
+            case 'completed':
+                return this.todos.filter(todo => todo.completed);
+            case 'pending':
+                return this.todos.filter(todo => !todo.completed);
+            case 'high':
+                return this.todos.filter(todo => todo.priority === 'high');
+            default:
+                return this.todos;
+        }
+    }
+
+    renderTodos() {
+        const filteredTodos = this.getFilteredTodos();
+        
+        if (filteredTodos.length === 0) {
+            this.todoList.style.display = 'none';
+            this.emptyState.classList.remove('hidden');
+            
+            // Update empty state message based on filter
+            const emptyMessages = {
+                all: 'No tasks yet! Add your first study goal above.',
+                completed: 'No completed tasks yet. Keep working! 💪',
+                pending: 'No pending tasks! You\'re all caught up! ✨',
+                high: 'No high priority tasks right now. 📗'
+            };
+            
+            const emptyP = this.emptyState.querySelector('p');
+            if (emptyP) {
+                emptyP.textContent = emptyMessages[this.currentFilter] || emptyMessages.all;
+            }
+        } else {
+            this.todoList.style.display = 'block';
+            this.emptyState.classList.add('hidden');
+            
+            this.todoList.innerHTML = filteredTodos.map(todo => this.createTodoHTML(todo)).join('');
+            
+            // Add event listeners to new elements
+            this.bindTodoEvents();
+        }
+    }
+
+    createTodoHTML(todo) {
+        const priorityClass = `priority-${todo.priority}`;
+        const priorityEmoji = {
+            high: '📕',
+            medium: '📙',
+            low: '📗'
+        };
+        
+        return `
+            <li class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo.id}">
+                <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''}>
+                <span class="todo-task">${this.escapeHtml(todo.task)}</span>
+                <span class="todo-priority ${priorityClass}">
+                    ${priorityEmoji[todo.priority]} ${todo.priority.toUpperCase()}
+                </span>
+                <button class="todo-delete" title="Delete task">🗑️</button>
+            </li>
+        `;
+    }
+
+    bindTodoEvents() {
+        // Checkbox events
+        const checkboxes = this.todoList.querySelectorAll('.todo-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const id = parseInt(e.target.closest('.todo-item').dataset.id);
+                this.toggleTodo(id);
+            });
+        });
+
+        // Delete button events
+        const deleteButtons = this.todoList.querySelectorAll('.todo-delete');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = parseInt(e.target.closest('.todo-item').dataset.id);
+                if (confirm('Are you sure you want to delete this task?')) {
+                    this.deleteTodo(id);
+                }
+            });
+        });
+    }
+
+    clearCompleted() {
+        const completedCount = this.todos.filter(todo => todo.completed).length;
+        
+        if (completedCount === 0) {
+            this.showNotification('No completed tasks to clear! 📝', 'info');
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete ${completedCount} completed task(s)?`)) {
+            this.todos = this.todos.filter(todo => !todo.completed);
+            this.saveTodos();
+            this.updateStats();
+            this.renderTodos();
+            this.showNotification(`Cleared ${completedCount} completed tasks! 🧹`, 'success');
+        }
+    }
+
+    clearAll() {
+        if (this.todos.length === 0) {
+            this.showNotification('No tasks to clear! 📝', 'info');
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete all ${this.todos.length} tasks? This cannot be undone.`)) {
+            this.todos = [];
+            this.saveTodos();
+            this.updateStats();
+            this.renderTodos();
+            this.showNotification('All tasks cleared! Fresh start! 🌟', 'success');
+        }
+    }
+
+    updateStats() {
+        const total = this.todos.length;
+        const completed = this.todos.filter(todo => todo.completed).length;
+        const pending = total - completed;
+
+        if (this.totalTasks) this.totalTasks.textContent = total;
+        if (this.completedTasks) this.completedTasks.textContent = completed;
+        if (this.pendingTasks) this.pendingTasks.textContent = pending;
+    }
+
+    saveTodos() {
+        try {
+            // Since we can't use localStorage in Claude artifacts, we'll store in memory
+            // In a real implementation, you would use:
+            // localStorage.setItem('studyTodos', JSON.stringify(this.todos));
+            console.log('Todos saved:', this.todos);
+        } catch (error) {
+            console.error('Error saving todos:', error);
+        }
+    }
+
+    loadTodos() {
+        try {
+            // Since we can't use localStorage in Claude artifacts, we'll use sample data
+            // In a real implementation, you would use:
+            // const saved = localStorage.getItem('studyTodos');
+            // if (saved) {
+            //     this.todos = JSON.parse(saved);
+            //     this.nextId = Math.max(...this.todos.map(t => t.id), 0) + 1;
+            // }
+            
+            // Sample data for demonstration
+            this.todos = [
+                {
+                    id: 1,
+                    task: 'Review math chapter 5',
+                    priority: 'high',
+                    completed: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    task: 'Complete history essay',
+                    priority: 'medium',
+                    completed: true,
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            this.nextId = 3;
+        } catch (error) {
+            console.error('Error loading todos:', error);
+            this.todos = [];
+            this.nextId = 1;
+        }
+    }
+
+    showNotification(message, type = 'success') {
+        // Create notification element if it doesn't exist
+        let notification = document.getElementById('todoNotification');
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.id = 'todoNotification';
+            notification.className = 'todo-notification';
+            document.body.appendChild(notification);
+        }
+
+        const icons = {
+            success: '✅',
+            error: '❌',
+            info: 'ℹ️'
+        };
+
+        notification.innerHTML = `
+            <div class="todo-notification-content">
+                <span class="todo-notification-icon">${icons[type] || icons.success}</span>
+                <span class="todo-notification-text">${message}</span>
+            </div>
+        `;
+
+        notification.className = `todo-notification ${type} show`;
+
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+// ToDo Notification Styles (Add this to your CSS)
+const todoNotificationStyles = `
+.todo-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--rust);
+    color: var(--white);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1003;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease-out;
+    max-width: 300px;
+}
+
+.todo-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.todo-notification.success {
+    background-color: var(--rust);
+}
+
+.todo-notification.error {
+    background-color: #d32f2f;
+}
+
+.todo-notification.info {
+    background-color: var(--butterscotch);
+}
+
+.todo-notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.todo-notification-icon {
+    font-size: 1.2em;
+}
+
+.todo-notification-text {
+    font-family: 'Lora', serif;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .todo-notification {
+        right: 20px;
+        left: 20px;
+        bottom: 20px;
+        max-width: none;
+    }
+}
+`;
+
+// Initialize ToDo Manager when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Add notification styles
+    const style = document.createElement('style');
+    style.textContent = todoNotificationStyles;
+    document.head.appendChild(style);
+    
+    // Initialize ToDo Manager only if todo elements exist
+    if (document.getElementById('todoBtn')) {
+        const todoManager = new StudyTodoManager();
+        
+        // Make it globally accessible for debugging
+        window.todoManager = todoManager;
+    }
+});
