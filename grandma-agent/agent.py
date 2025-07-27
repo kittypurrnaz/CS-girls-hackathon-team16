@@ -34,7 +34,7 @@ generation_config = {
     "temperature": 0.9, # Adjust for creativity (higher = more creative)
     "top_p": 1,
     "top_k": 1,
-    "max_output_tokens": 100, # Limit response length
+    "max_output_tokens": 250, # Limit response length
 }
 
 safety_settings = [

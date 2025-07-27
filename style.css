@@ -75,11 +75,14 @@ body {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 30px;
+    gap: 40px; /* Increased gap for better spacing between longer buttons */
     z-index: 6;
-    flex-wrap: wrap;
+    /* Removed flex-wrap here to force them on one line by default */
     justify-content: center;
     padding: 0 20px;
+    width: auto; /* Let content dictate width */
+    max-width: 90%; /* Prevent stretching too wide */
+    white-space: nowrap; /* Keep buttons on one line */
 }
 
 .room-btn {
@@ -94,6 +97,12 @@ body {
     text-transform: uppercase;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* Removed flex: 1, min-width, max-width to allow content to dictate length */
+    width: auto; /* Allow button to size to its content */
+    flex-shrink: 0; /* Prevent buttons from shrinking too much if space is tight (for larger screens) */
+    display: inline-block; /* Make sure text does not wrap and button behaves like an inline block */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    text-align: center;
 }
 
 .room-btn:hover {
@@ -109,8 +118,9 @@ body {
     top: 30px;
     right: 30px;
     display: flex;
-    gap: 20px;
+    gap: 20px; /* Consistent gap between buttons */
     z-index: 10;
+    align-items: center; /* **Crucial for vertical alignment** */
 }
 
 .top-btn {
@@ -124,8 +134,12 @@ body {
     font-family: 'Pixelify Sans', cursive;
     text-transform: uppercase;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    position: relative;
+    position: relative; /* Keep for potential inner positioning */
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+    display: inline-flex; /* Use flex to easily center content if needed */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
 }
 
 .top-btn:hover {
@@ -137,10 +151,17 @@ body {
 /* --- Dropdown for Room Navigation --- */
 .dropdown {
     position: relative;
-    display: inline-block;
+    /* Inherit flex properties from .top-buttons */
+    /* No need for display: inline-block here, as it's a direct child of a flex container */
+    /* This button needs to explicitly get .top-btn styling */
 }
 
-.dropdown-wrapper {
+/* Ensure the dropdown button itself is styled as a top-btn */
+.dropdown .top-btn.dropbtn {
+    /* No additional styles needed here, it inherits correctly now */
+}
+
+.dropdown-wrapper { /* This wrapper is not actually used in the provided HTML structure. You can likely remove it from the CSS. */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -157,9 +178,11 @@ body {
     z-index: 3;
     border-radius: 8px;
     padding: 10px 0;
-    top: 100%;
+    top: calc(100% + 10px); /* Position below the button with a small gap */
     left: 50%;
     transform: translateX(-50%);
+    white-space: nowrap; /* Prevent content wrapping */
+    border: 2px solid var(--russet); /* Add border for consistency */
 }
 
 .dropdown-content a {
@@ -178,10 +201,13 @@ body {
     color: var(--xanthous);
 }
 
-.dropbtn:hover .dropdown-content {
+/* Modified hover to display dropdown content */
+/* Make sure the dropdown content displays when hovering over the .dropdown container */
+/* Shows the menu and keeps it open */
+.dropdown:hover .dropdown-content,
+.dropdown-content:hover {
     display: block;
 }
-
 
 /* --- About Popup Styling --- */
 .popup {
@@ -216,7 +242,7 @@ body {
 }
 
 .popup p {
-    font-family: 'Lora', serif;
+    font-family: 'Lora', serif; /* Keep Lora for body text */
     font-size: 1.1em;
     line-height: 1.6;
     margin-bottom: 20px;
@@ -594,7 +620,7 @@ body {
     }
     .room-selection-buttons {
         bottom: 15%;
-        gap: 20px;
+        gap: 30px; /* Slightly reduced gap for tablets */
     }
     .room-btn {
         padding: 12px 25px;
@@ -662,35 +688,38 @@ body {
         bottom: 25%;
     }
     .room-selection-buttons {
-        flex-direction: column;
+        flex-direction: column; /* Re-enable stacking for smaller screens */
         bottom: 15%;
         gap: 10px;
         width: calc(100% - 40px);
         left: 50%;
         transform: translateX(-50%);
+        max-width: 250px; /* Constrain width when stacked */
+        white-space: normal; /* Allow text to wrap if necessary */
     }
     .room-btn {
-        width: 100%;
-        max-width: 250px;
+        width: 100%; /* Take full available width when stacked */
+        max-width: 250px; /* But don't exceed a reasonable max */
         padding: 10px 20px;
         font-size: 1em;
     }
 
     .top-buttons {
-        flex-direction: column;
+        flex-direction: column; /* Stack buttons vertically */
         top: 20px;
         right: 20px;
         left: 20px;
         width: calc(100% - 40px);
-        align-items: flex-end;
+        align-items: flex-end; /* Align to the right */
         gap: 10px;
     }
     .top-btn {
         width: auto;
-        max-width: 180px;
+        max-width: 180px; /* Maintain a max-width for stacked buttons */
         padding: 10px 15px;
         font-size: 0.9em;
         text-align: center;
+        width: 100%; /* Make them fill available width when stacked */
     }
     /* Fixed dropdown for mobile vertical stacking */
     .dropdown {
@@ -788,7 +817,8 @@ body {
     opacity: 1;
 }
 
-.popup-header {
+/* Duplicated from .timer-popup, consider consolidating if possible for .popup-header, .popup-title, .close-btn */
+/* .popup-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -815,7 +845,7 @@ body {
 .close-btn:hover {
     transform: scale(1.2) rotate(90deg);
     color: var(--butterscotch);
-}
+} */
 
 .spotify-content {
     display: flex;
@@ -1049,10 +1079,14 @@ body {
     }
     .room-selection-buttons {
         bottom: 10%;
+        /* Re-evaluate if you want them always stacked on small screens or try to keep them inline */
+        flex-direction: column; /* Keep stacked on small screens for better UX */
+        max-width: 220px; /* Adjust max-width for very small screens */
     }
     .room-btn {
         font-size: 0.9em;
         padding: 8px 15px;
+        max-width: 220px; /* Ensure consistency */
     }
     .top-buttons {
         right: 15px;
@@ -1091,5 +1125,360 @@ body {
     }
     .main-buttons {
         gap: 15px;
+    }
+}
+
+/* --- ToDo Popup Styling (NEW) --- */
+.todo-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(60, 20, 10, 0.95); /* Consistent with other overlays */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.todo-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.todo-popup {
+    background-color: var(--soft-off-white);
+    border: 4px solid var(--butterscotch);
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 550px;
+    max-width: 90%;
+    max-height: 90vh;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    color: var(--black-bean);
+    text-align: left;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-overlay.active .todo-popup {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.todo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto; /* Allow content to scroll if it overflows */
+}
+
+/* Input Section */
+.todo-input-section {
+    background-color: rgba(137, 70, 25, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(137, 70, 25, 0.2);
+}
+
+.todo-input-section .input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#todoInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid var(--butterscotch);
+    border-radius: 10px;
+    background-color: var(--white);
+    color: var(--black-bean);
+    font-family: 'Lora', serif;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#todoInput:focus {
+    border-color: var(--rust);
+    box-shadow: 0 0 8px rgba(178, 74, 6, 0.3);
+}
+
+.add-btn {
+    background-color: var(--rust);
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-btn:hover {
+    background-color: var(--butterscotch);
+    transform: translateY(-2px);
+}
+
+.priority-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Pixelify Sans', cursive;
+    color: var(--russet);
+}
+
+#prioritySelect {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--butterscotch);
+    background-color: var(--white);
+    font-family: 'Lora', serif;
+    font-size: 0.9em;
+    outline: none;
+}
+
+/* Stats Section */
+.todo-stats {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(249, 193, 80, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-item {
+    font-family: 'Pixelify Sans', cursive;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.8em;
+    color: var(--rust);
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: var(--russet);
+}
+
+/* Filters Section */
+.todo-filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background-color: transparent;
+    color: var(--russet);
+    border: 2px solid var(--butterscotch);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: rgba(213, 137, 43, 0.2);
+    border-color: var(--rust);
+    color: var(--rust);
+}
+
+.filter-btn.active {
+    background-color: var(--rust);
+    color: var(--white);
+    border-color: var(--rust);
+    font-weight: bold;
+}
+
+/* List Section */
+.todo-list-container {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 10px;
+    min-height: 200px;
+    max-height: 30vh; /* Control max height */
+    overflow-y: auto;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 180px;
+    text-align: center;
+    color: var(--russet);
+}
+
+.empty-state.hidden {
+    display: none;
+}
+
+.empty-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ToDo Item */
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid rgba(137, 70, 25, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-item:hover {
+    background-color: rgba(249, 193, 80, 0.1);
+}
+
+.todo-checkbox {
+    cursor: pointer;
+    min-width: 18px;
+    height: 18px;
+}
+
+.todo-task {
+    flex-grow: 1;
+    font-family: 'Lora', serif;
+    font-size: 1em;
+    color: var(--black-bean);
+    transition: all 0.3s ease;
+}
+
+.todo-item.completed .todo-task {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.todo-priority {
+    font-family: 'Pixelify Sans', cursive;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.priority-high {
+    background-color: rgba(178, 74, 6, 0.2);
+    color: var(--rust);
+}
+.priority-medium {
+    background-color: rgba(213, 137, 43, 0.2);
+    color: var(--butterscotch);
+}
+.priority-low {
+    background-color: rgba(137, 70, 25, 0.2);
+    color: var(--russet);
+}
+
+.todo-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+
+.todo-delete:hover {
+    opacity: 1;
+    color: #c0392b;
+    transform: scale(1.2);
+}
+
+/* Actions Section */
+.todo-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(137, 70, 25, 0.2);
+}
+
+.action-btn {
+    flex-grow: 1;
+    background-color: var(--xanthous);
+    color: var(--black-bean);
+    border: 2px solid var(--butterscotch);
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Pixelify Sans', cursive;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.clear-all-btn {
+    background-color: var(--russet);
+    color: var(--white);
+    border-color: var(--black-bean);
+}
+
+.clear-all-btn:hover {
+    background-color: var(--rust);
+}
+
+/* Responsive Styles for ToDo Popup */
+@media (max-width: 768px) {
+    .todo-popup {
+        padding: 25px;
+    }
+    .stat-number {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .todo-popup {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        border: none;
+    }
+    .todo-input-section .input-container {
+        flex-direction: column;
+    }
+    .add-btn {
+        width: 100%;
+    }
+    .todo-stats {
+        padding: 10px;
     }
 }
