@@ -92,6 +92,33 @@
       </div>
     </div>
 
+<div class="spotify-overlay" id="spotifyOverlay">
+  <div class="spotify-popup">
+    <div class="popup-header">
+      <h2 class="popup-title">🎵 Relaxing Music</h2>
+      <button class="close-btn" id="closeSpotifyBtn">✕</button>
+    </div>
+
+    <div class="spotify-content">
+      <div class="playlist-section">
+        <h3>Enter Your Favorite Spotify Playlist</h3>
+        <div class="input-container">
+          <input type="text" id="playlist-input" placeholder="Paste Spotify playlist URL here...">
+          <button class="embed-btn" onclick="embedPlaylist()">🎧 Load Playlist</button>
+        </div>
+      </div>
+
+      <div id="playlist-container" class="playlist-container">
+        <div class="default-message">
+          <div class="music-icon">🎼</div>
+          <p>Paste a Spotify playlist URL above to start listening to your favorite relaxing music!</p>
+          <small>Example: https://open.spotify.com/playlist/37i9dQZF1DX...</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="script.js"></script>
 </body>
 </html>

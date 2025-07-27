@@ -1,5 +1,7 @@
-// About Popup functions (for all pages where the popup exists)
+// Ensure all JavaScript runs once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- About Popup functions (for all pages where the popup exists) ---
     const popup = document.getElementById("popup");
     const aboutBtn = document.getElementById("aboutBtn");
     const closeAboutPopupBtn = document.getElementById("closeAboutPopup");
@@ -28,74 +30,78 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const chatMessages = document.getElementById('chatMessages');
 
-    if (chatInput && sendBtn && chatMessages) { // Only run if chat elements are present
+    // Only run if chat elements are present on the current page
+    if (chatInput && sendBtn && chatMessages) {
+        // Function to add messages to the chat display
         function addMessage(message, type) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', `${type}-message`);
-            messageDiv.innerHTML = `<p>${message}</p>`;
+            const pElement = document.createElement('p');
+            pElement.textContent = message; // Set text content
+            messageDiv.appendChild(pElement);
             chatMessages.appendChild(messageDiv);
-            // Scroll to the bottom of the chat messages
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
         }
 
-        function sendMessage() {
+        // Variable to store the reminder timeout ID
+        let currentReminderTimeout = null;
+
+        // Function to send message to the backend and handle response
+        async function sendMessage() {
             const userMessage = chatInput.value.trim();
             if (userMessage === '') {
                 return; // Don't send empty messages
             }
 
-            addMessage(userMessage, 'user'); // Add user's message to display
-            chatInput.value = ''; // Clear the input field
+            addMessage(userMessage, 'user'); // Display user's message
+            chatInput.value = ''; // Clear input field
+            sendBtn.disabled = true; // Disable send button
+            chatInput.disabled = true; // Disable input field
 
-            // --- Placeholder for AI Integration ---
-            // This is where you would typically send `userMessage` to your backend server.
-            // The backend would then call the AI model (like Google's Gemini API)
-            // and send back the grandma's response.
+            try {
+                // Send message to your Flask backend
+                const response = await fetch('http://localhost:5000/chat', { // IMPORTANT: Ensure this URL matches your Flask backend
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
 
-            // For now, let's simulate a grandma-like response and reminders.
-            setTimeout(() => {
-                let botResponse = "Oh, my dear, that's a lovely thought. Tell Grandma more about it.";
-                
-                if (userMessage.toLowerCase().includes("study") || userMessage.toLowerCase().includes("studying")) {
-                    botResponse = "Studying, are we, sweetie? That's wonderful! Just make sure to stretch your legs every now and then, and don't forget to blink! Grandma worries about your eyes!";
-                    scheduleReminder("water"); // Schedule a reminder after a study-related message
-                } else if (userMessage.toLowerCase().includes("stress") || userMessage.toLowerCase().includes("vent") || userMessage.toLowerCase().includes("frustrated")) {
-                    botResponse = "Oh, my precious, it sounds like you're feeling a bit overwhelmed. It's perfectly alright to feel that way. Just take a deep breath. Grandma's here, and we can talk about anything.";
-                } else if (userMessage.toLowerCase().includes("hungry") || userMessage.toLowerCase().includes("eat")) {
-                    botResponse = "Hungry, are we? Grandma knows just the thing! Make sure you get yourself a little snack. A full tummy makes for a happy mind!";
-                } else if (userMessage.toLowerCase().includes("tired") || userMessage.toLowerCase().includes("sleep")) {
-                    botResponse = "Oh, sweetie, if you're tired, it's time for a proper rest. Even a short nap can do wonders. You can't pour from an empty cup, remember?";
-                } else if (userMessage.toLowerCase().includes("water") || userMessage.toLowerCase().includes("drink")) {
-                    botResponse = "Goodness, yes! Stay hydrated, my love. A good glass of water keeps you sharp as a tack!";
-                } else if (userMessage.toLowerCase().includes("hello") || userMessage.toLowerCase().includes("hi")) {
-                    botResponse = "Hello there, darling! So good to hear from you. What brings you to Grandma's living room today?";
+                const data = await response.json();
+
+                if (response.ok) {
+                    addMessage(data.reply, 'bot'); // Display Grandma's reply
+
+                    // Clear any existing reminder and set a new one after bot's response
+                    if (currentReminderTimeout) {
+                        clearTimeout(currentReminderTimeout);
+                    }
+
+                    // Schedule a general well-being reminder after 30 minutes
+                    currentReminderTimeout = setTimeout(() => {
+                        addMessage("Grandma noticed you're still at it. Remember to stretch those tired muscles, my dear, and have a sip of water!", 'bot');
+                        
+                        // Schedule a food reminder 10 seconds after the well-being reminder
+                        setTimeout(() => {
+                            addMessage("And don't forget a little snack, sweetie! A cookie perhaps?", 'bot');
+                        }, 10 * 1000); // 10 seconds
+                    }, 30 * 60 * 1000); // 30 minutes
                 } else {
-                    // Default comforting response
-                    botResponse = "That's very interesting, dear. What else is on your mind? Grandma's always here to listen.";
+                    console.error("Backend error:", data.error);
+                    addMessage("Oh dear, Grandma can't quite hear you right now. The internet must be acting up!", 'bot');
                 }
-
-                addMessage(botResponse, 'bot');
-
-                // Schedule reminders if not already set (this is basic, you'd refine it)
-                if (window.reminderTimeout) clearTimeout(window.reminderTimeout); // Clear previous
-                window.reminderTimeout = setTimeout(() => {
-                    const reminder = Math.random() < 0.5 ? "Remember to take a little break, my love. Don't overdo it!" : "Have you had a sip of water, dear? Stay hydrated!";
-                    addMessage(reminder, 'bot');
-                    // Consider scheduling food reminder too
-                    setTimeout(() => {
-                        addMessage("And don't forget a little snack, sweetie! A cookie perhaps?", 'bot');
-                    }, 10 * 1000); // 10 seconds after water reminder
-                }, 30 * 60 * 1000); // 30 minutes (30 * 60 * 1000 milliseconds)
-            }, 800); // Simulate bot typing delay
-
-            // Function for specific reminders (can be called by bot's logic)
-            function scheduleReminder(type) {
-                // This is a simplified example. You'd likely want more sophisticated tracking
-                // to avoid spamming reminders.
-                console.log(`Scheduling a ${type} reminder for Grandma's bot.`);
+            } catch (error) {
+                console.error("Network or fetch error:", error);
+                addMessage("Oh dear, Grandma seems to have lost her spectacles and can't find the internet. Try again in a moment, precious.", 'bot');
+            } finally {
+                sendBtn.disabled = false; // Re-enable button
+                chatInput.disabled = false; // Re-enable input
+                chatInput.focus(); // Put cursor back
             }
         }
 
+        // Add event listeners for sending messages
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
@@ -190,40 +196,180 @@ document.addEventListener('DOMContentLoaded', () => {
             playNotificationSound() { try { const audioContext = new (window.AudioContext || window.webkitAudioContext)(); const oscillator = audioContext.createOscillator(); const gainNode = audioContext.createGain(); oscillator.connect(gainNode); gainNode.connect(audioContext.destination); oscillator.frequency.value = 800; oscillator.type = 'sine'; gainNode.gain.setValueAtTime(0.1, audioContext.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5); oscillator.start(audioContext.currentTime); oscillator.stop(audioContext.currentTime + 0.5); } catch (error) { console.log('Audio notification not available or Web Audio API not supported:', error); } }
             autoStartBreak() { if (this.isBreakTime) { setTimeout(() => { this.startTimer(); }, 2000); } }
         }
-        const timer = new StudyPomodoroTimer(); // Initialize timer here as well
+        const timer = new StudyPomodoroTimer(); // Initialize timer
     }
     
-    // --- COMMENTED OUT: This was overriding the GIF background ---
+    // Ambient study room effects (COMMENTED OUT TO AVOID CONFLICTS WITH GIF BACKGROUNDS)
     // const studyRoom = document.querySelector('.room_background.study-room');
     // if (studyRoom) {
     //     const addStudyRoomEffects = () => {
     //         setInterval(() => {
-    //             const opacity = 0.05 + Math.random() * 0.05; // Keep opacity subtle
+    //             const opacity = 0.05 + Math.random() * 0.05;
     //             studyRoom.style.background = `
     //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity}) 0%, transparent 50%),
     //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(255, 177, 153, ${opacity}) 0%, transparent 50%),
     //                 radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, rgba(120, 119, 198, ${opacity * 0.5}) 0%, transparent 50%)
     //             `;
-    //         }, 3000); // Change every 3 seconds
+    //         }, 3000);
     //     };
     //     addStudyRoomEffects();
     // }
-});
 
-// Service Worker for notifications (if needed) - This requires a sw.js file
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
-        console.log('Service Worker registration failed');
-    });
-}
+    // --- Spotify Popup Logic ---
+    const spotifyBtn = document.getElementById('spotifyBtn');
+    const spotifyOverlay = document.getElementById('spotifyOverlay');
+    const closeSpotifyBtn = document.getElementById('closeSpotifyBtn');
+    const playlistInput = document.getElementById('playlist-input');
 
-// Request notification permission (should ideally be triggered by a user gesture)
-if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            console.log("Notification permission granted.");
-        } else {
-            console.log("Notification permission denied.");
+    // Open Spotify popup
+    if (spotifyBtn) {
+        spotifyBtn.addEventListener('click', () => {
+            if (spotifyOverlay) {
+                spotifyOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+
+    // Close Spotify popup
+    if (closeSpotifyBtn) {
+        closeSpotifyBtn.addEventListener('click', () => {
+            if (spotifyOverlay) {
+                spotifyOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // Close popup when clicking outside
+    if (spotifyOverlay) {
+        spotifyOverlay.addEventListener('click', (e) => {
+            if (e.target === spotifyOverlay) {
+                spotifyOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    // Enter key support for playlist input
+    if (playlistInput) {
+        playlistInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                embedPlaylist();
+            }
+        });
+
+        // Auto-focus input when popup opens (optional enhancement)
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (spotifyOverlay.classList.contains('active')) {
+                        setTimeout(() => {
+                            playlistInput.focus();
+                        }, 300); // Small delay for animation
+                    }
+                }
+            });
+        });
+        observer.observe(spotifyOverlay, { attributes: true });
+    }
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (spotifyOverlay && spotifyOverlay.classList.contains('active') && e.key === 'Escape') {
+            spotifyOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
     });
+
+}); // End of DOMContentLoaded
+
+// --- Spotify Playlist Embed Function ---
+// Moved outside DOMContentLoaded so it's globally accessible for onclick events
+function embedPlaylist() {
+    const input = document.getElementById('playlist-input').value.trim();
+    const container = document.getElementById('playlist-container');
+    
+    if (!input) {
+        container.innerHTML = `
+            <div class="error-message">
+                <div class="error-icon">⚠️</div>
+                <p style="color: var(--rust);">Please enter a playlist URL!</p>
+                <small>Make sure to paste a valid Spotify playlist link.</small>
+            </div>
+        `;
+        return;
+    }
+
+    // Multiple regex patterns to catch different Spotify URL formats
+    const patterns = [
+        /playlist\/([a-zA-Z0-9_-]+)/,
+        /playlist\?si=([a-zA-Z0-9_-]+)/,
+        /playlist\/([a-zA-Z0-9_-]+)\?si=/
+    ];
+
+    let playlistId = null;
+    
+    // Try to extract playlist ID from different URL formats
+    for (const pattern of patterns) {
+        const match = input.match(pattern);
+        if (match && match[1]) {
+            playlistId = match[1];
+            break;
+        }
+    }
+
+    if (playlistId) {
+        // Correct Spotify embed URL format
+        const embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`;
+        
+        container.innerHTML = `
+            <div class="spotify-player">
+                <iframe 
+                    src="${embedUrl}" 
+                    width="100%" 
+                    height="380" 
+                    frameborder="0" 
+                    allowfullscreen="" 
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                    loading="lazy"
+                    style="border-radius: 12px;">
+                </iframe>
+                <div class="player-controls">
+                    <button class="refresh-btn" onclick="embedPlaylist()">🔄 Refresh</button>
+                    <button class="clear-btn" onclick="clearPlaylist()">✖ Clear</button>
+                </div>
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="error-message">
+                <div class="error-icon">⚠️</div>
+                <p style="color: var(--rust);">Invalid Spotify playlist URL!</p>
+                <small>Make sure you're using a valid Spotify playlist link.<br>
+                Example: https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M</small>
+            </div>
+        `;
+    }
+}
+
+// Clear playlist function
+// Moved outside DOMContentLoaded so it's globally accessible for onclick events
+function clearPlaylist() {
+    const container = document.getElementById('playlist-container');
+    const input = document.getElementById('playlist-input');
+    
+    if (input) {
+        input.value = '';
+    }
+    
+    if (container) {
+        container.innerHTML = `
+            <div class="default-message">
+                <div class="music-icon">🎼</div>
+                <p>Paste a Spotify playlist URL above to start listening to your favorite relaxing music!</p>
+                <small>Example: https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M</small>
+            </div>
+        `;
+    }
 }
