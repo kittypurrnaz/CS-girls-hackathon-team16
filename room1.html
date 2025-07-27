@@ -119,6 +119,70 @@
   </div>
 </div>
 
+  <!-- ToDo Popup HTML Structure -->
+<div class="todo-overlay" id="todoOverlay">
+  <div class="todo-popup">
+    <div class="popup-header">
+      <h2 class="popup-title">📝 Study ToDo List</h2>
+      <button class="close-btn" id="closeTodoBtn">✕</button>
+    </div>
+
+    <div class="todo-content">
+      <div class="todo-input-section">
+        <div class="input-container">
+          <input type="text" id="todoInput" placeholder="Add a new study task...">
+          <button class="add-btn" id="addTodoBtn">➕ Add</button>
+        </div>
+        <div class="priority-selector">
+          <label>Priority:</label>
+          <select id="prioritySelect">
+            <option value="low">📗 Low</option>
+            <option value="medium" selected>📙 Medium</option>
+            <option value="high">📕 High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="todo-stats">
+        <div class="stat-item">
+          <span class="stat-number" id="totalTasks">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="completedTasks">0</span>
+          <span class="stat-label">Done</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="pendingTasks">0</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+
+      <div class="todo-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+        <button class="filter-btn" data-filter="high">High Priority</button>
+      </div>
+
+      <div class="todo-list-container">
+        <ul id="todoList" class="todo-list">
+          <!-- Todo items will be dynamically added here -->
+        </ul>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">📚</div>
+          <p>No tasks yet! Add your first study goal above.</p>
+        </div>
+      </div>
+
+      <div class="todo-actions">
+        <button class="action-btn clear-completed-btn" id="clearCompletedBtn">🗑️ Clear Completed</button>
+        <button class="action-btn clear-all-btn" id="clearAllBtn">🔄 Clear All</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="script.js"></script>
 </body>
 </html>
