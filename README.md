@@ -99,14 +99,14 @@ The backend powers the Grandma Chatbot by communicating with the Google Gemini A
      * This file is automatically ignored by Git for security.  
    * **Option B: Hardcoding (For Quick Local Testing ONLY \- Not for Production\!):**  
      * Open agent.py in the backend/grandma-agent/ directory.  
-     * Find the line GOOGLE\_API\_KEY \= "AIzaSyB00BXw4pQohDbL9hGXGjROCidEMuU1A54" (or similar).  
-     * Replace "AIzaSyB00BXw4pQohDbL9hGXGjROCidEMuU1A54" with your actual Google Gemini API Key.  
+     * Find the line GOOGLE\_API\_KEY \= "YOUR_API_KEY" (or similar).  
+     * Replace "YOUR_API_KEY" with your actual Google Gemini API Key.  
      * **Security Warning:** Never commit your actual API key directly into your code in a public repository\! This option is purely for immediate local testing if .env setup proves challenging.  
 6. Run the Flask Server:  
    From within the backend/grandma-agent/ directory (and with your virtual environment activated), run:  
    py agent.py
 
-   You should see output indicating the Flask development server is running on http://127.0.0.1:5000. Keep this terminal window open; the server needs to be running for the chatbot to function.
+   You should see output indicating the Flask development server is running on http://127.0.0.1:5000. Keep this terminal window open; the server needs to be running for the chatbot to function. Do note this is for testing on localhost. Replace the URL with a different active server for public use.
 
 ### **🌐 2\. Frontend Access (HTML, CSS, JavaScript)**
 
