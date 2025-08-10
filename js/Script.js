@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Send message to your Flask backend
-                const response = await fetch('http://localhost:5000/chat', { // IMPORTANT: Ensure this URL matches your Flask backend
+                const response = await fetch('http://localhost:5000/chat', { // IMPORTANT: Ensure this URL matches your Flask backend. This URL is for testing purposes on localhost only.
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
